@@ -43,11 +43,13 @@ import actionlib
 from manipulation_msgs.srv import GraspPlanning, GraspPlanningResponse
 from manipulation_msgs.msg import Grasp, GraspPlanningAction, GraspPlanningErrorCode, GraspPlanningResult, GripperTranslation
 from pr2_gripper_grasp_planner_cluster.srv import SetPointClusterGraspParams, SetPointClusterGraspParamsResponse
+# import pdb 
+# pdb.set_trace()
 import pr2_gripper_grasp_planner_cluster.point_cluster_grasp_planner as grasp_planner_cluster
 from sensor_msgs.msg import JointState
 import random
 import pdb
-from object_manipulator.convert_functions import *
+from object_recognition_clusters.convert_functions import *
 import time
 
 ##class for the point cluster grasp planner service

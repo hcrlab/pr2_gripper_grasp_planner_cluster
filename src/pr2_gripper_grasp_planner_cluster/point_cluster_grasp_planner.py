@@ -38,8 +38,8 @@
 #cloud and searching for orthogonal grasps (and a few extra grasps of high points)
 
 from __future__ import division
-# import roslib
-# roslib.load_manifest('pr2_gripper_grasp_planner_cluster')
+import roslib
+roslib.load_manifest('pr2_gripper_grasp_planner_cluster')
 import rospy
 import scipy
 import pdb
@@ -284,12 +284,12 @@ class PointClusterGraspPlanner:
     #table is assumed to be the xy plane
     def check_gripper_pose(self, points, pose):
 
-        if self.debug:
-            #self.draw_functions.clear_rviz_points(ns = 'wrist_frame_points', id = 0)
-            for i in range(3):
+        # if self.debug:
+        #     self.draw_functions.clear_rviz_points(ns = 'wrist_frame_points', id = 0)
+        #     for i in range(3):
                 
-                #self.draw_functions.clear_rviz_points(ns = 'box_point_collision_points', id = i)
-            #self.draw_functions.clear_rviz_points(ns = 'inside_gripper_points', id = 0)
+        #         self.draw_functions.clear_rviz_points(ns = 'box_point_collision_points', id = i)
+        #     self.draw_functions.clear_rviz_points(ns = 'inside_gripper_points', id = 0)
 
         #draw the gripper model we're currently checking in rviz and broadcast the current 'wrist_frame' transform
         if self.draw_gripper:
@@ -344,10 +344,10 @@ class PointClusterGraspPlanner:
                 min_space_points = current_list_space_points
         if min_space_points and self.debug:
             print "min_space_points:", min_space_points
-            if debug_points != None:
+            # if debug_points != None:
                 
-                #self.draw_functions.draw_rviz_points(debug_points, frame = 'wrist_frame', size = .0075, ns = 'inside_gripper_points', id = 0., \
-                                                     duration = 20., color = [0,0,1], opaque = 1)
+            #     self.draw_functions.draw_rviz_points(debug_points, frame = 'wrist_frame', size = .0075, ns = 'inside_gripper_points', id = 0., \
+            #                                          duration = 20., color = [0,0,1], opaque = 1)
         if self.debug:
             self.keypause()
 
