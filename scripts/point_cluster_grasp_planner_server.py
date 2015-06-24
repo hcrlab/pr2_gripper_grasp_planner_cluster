@@ -51,6 +51,7 @@ import random
 import pdb
 from object_recognition_clusters.convert_functions import *
 import time
+import geometry_msgs.msg
 
 ##class for the point cluster grasp planner service
 class PointClusterGraspPlannerServer:
@@ -161,10 +162,10 @@ class PointClusterGraspPlannerServer:
 
         #get the hand joint names from the param server (loaded from yaml config file)
         hand_description = rospy.get_param('hand_description')
-        pregrasp_joint_angles_dict = rospy.get_param('~pregrasp_joint_angles')
-        grasp_joint_angles_dict = rospy.get_param('~grasp_joint_angles')
-        pregrasp_joint_efforts_dict = rospy.get_param('~pregrasp_joint_efforts')
-        grasp_joint_efforts_dict = rospy.get_param('~grasp_joint_efforts')
+        pregrasp_joint_angles_dict = rospy.get_param('pr2_gripper_grasp_planner_cluster/pregrasp_joint_angles')
+        grasp_joint_angles_dict = rospy.get_param('pr2_gripper_grasp_planner_cluster/grasp_joint_angles')
+        pregrasp_joint_efforts_dict = rospy.get_param('pr2_gripper_grasp_planner_cluster/pregrasp_joint_efforts')
+        grasp_joint_efforts_dict = rospy.get_param('pr2_gripper_grasp_planner_cluster/grasp_joint_efforts')
         if not arm_name:
             arm_name = hand_description.keys()[0]
             rospy.logerr("point cluster grasp planner: missing arm_name in request!  Using "+arm_name)
@@ -230,10 +231,19 @@ class PointClusterGraspPlannerServer:
             if cluster_frame == target.reference_frame_id:
                 transformed_grasp_pose = stamp_pose(grasp_pose, cluster_frame)
             else:
-                transformed_grasp_pose = change_pose_stamped_frame(self.pcgp.tf_listener, 
-                                         stamp_pose(grasp_pose, cluster_frame), 
-                                         target.reference_frame_id)
-            if self.pcgp.pregrasp_just_outside_box:
+		#rospy.loginfo("cluster frame: ")
+		#rospy.loginfo(type(cluster_frame))
+		#rospy.loginfo("grasp pose: ")
+		#rospy.loginfo(type(grasp_pose))
+		grasp_pose_stamped = geometry_msgs.msg.PoseStamped()
+		grasp_pose_stamped.pose = grasp_pose
+		grasp_pose_stamped.header.frame_id = target.reference_frame_id
+                transformed_grasp_pose = grasp_pose_stamped
+		#transformed_grasp_pose = change_pose_stamped_frame(self.pcgp.tf_listener, 
+                #                         stamp_pose(grasp_pose, cluster_frame), 
+                #                         target.reference_frame_id)
+	    
+	    if self.pcgp.pregrasp_just_outside_box:
                 min_approach_distance = pregrasp_dist
             else:
                 min_approach_distance = max(pregrasp_dist-.05, .05)
